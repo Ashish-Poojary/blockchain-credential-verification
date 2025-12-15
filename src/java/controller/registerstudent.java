@@ -96,7 +96,7 @@ public class registerstudent extends HttpServlet {
             pst2.setString(5,t5);
            
            
-            File f=new File(utils.ConfigReader.getImagesPath());
+            File f=new File("C:\\studentcertificate");
                 System.out.println(f.getPath());
                 if (!f.exists())
                     f.mkdir();

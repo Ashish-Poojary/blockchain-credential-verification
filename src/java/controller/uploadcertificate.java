@@ -40,7 +40,7 @@ public class uploadcertificate extends HttpServlet {
             }
 
             // Save PDF locally
-            File dir = new File(utils.ConfigReader.getCertificatesPath());
+            File dir = new File("C:/Users/ashis/Documents/certificates");
             if (!dir.exists()) dir.mkdirs();
 
             String pdfPath = dir.getPath() + "/" + usn + ".pdf";

@@ -2,19 +2,19 @@
 # Copy this file to config.properties and fill in your actual values
 # DO NOT commit config.properties to version control
 
-# Database Configuration
-db.host=localhost
-db.port=3306
-db.name=studentcertificate
-db.username=root
-db.password=your_mysql_password_here
-
 # Email Configuration (Gmail SMTP)
 email.smtp.host=smtp.gmail.com
 email.smtp.port=465
 email.smtp.username=your_email@gmail.com
 email.smtp.password=your_gmail_app_password_here
 email.from.address=your_email@gmail.com
+
+# Database Configuration
+db.host=localhost
+db.port=3306
+db.name=studentcertificate
+db.username=root
+db.password=your_mysql_password_here
 
 # Admin Email
 admin.email=admin@example.com
@@ -27,11 +27,4 @@ storage.download.path=C:/download/certificates
 # Blockchain Server Configuration
 blockchain.server.host=localhost
 blockchain.server.port=3000
-
-# FTP Configuration (Optional - for cloud storage)
-ftp.enabled=false
-ftp.host=ftp.example.com
-ftp.username=your_ftp_username
-ftp.password=your_ftp_password
-ftp.port=21
 

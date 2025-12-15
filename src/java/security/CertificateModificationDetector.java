@@ -259,7 +259,7 @@ public class CertificateModificationDetector {
      * Utility methods
      */
     private static String getCertificatePath(String usn) {
-        return utils.ConfigReader.getCertificatesPath() + "/" + usn + ".jpg";
+        return "C:/Users/ashis/Documents/certificates/" + usn + ".jpg";
     }
     
     private static String calculateFileHash(String filePath) throws Exception {

@@ -221,7 +221,7 @@
                     <h4>BIT College</h4>
                     <p><strong>Address:</strong> Bangalore Institute of Technology, Bangalore, India</p>
                     <p><strong>Phone:</strong> +91 080 26615865</p>
-                    <p><strong>Email:</strong> admin@example.com</p>
+                    <p><strong>Email:</strong> principalbit4@gmail.com</p>
                 </div>
                 <div class="col-md-4">
                     <h4>Follow Us</h4>

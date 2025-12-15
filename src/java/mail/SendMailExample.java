@@ -44,7 +44,7 @@ public class SendMailExample {
 
         Transport.send(msg);
 
-        System.out.println("✅ Email sent successfully to " + sendermail);
+        System.out.println("Email sent successfully to " + sendermail);
     }
 
     public String getOTP() {

@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Vector;
 import org.apache.commons.net.ftp.*;
-import utils.ConfigReader;
 
 public class MyFTPClient1 {
 
@@ -18,13 +17,7 @@ public class MyFTPClient1 {
         
         // FTP connection (commented out - configure in config.properties if needed)
         /*
-        if (ConfigReader.getProperty("ftp.enabled", "false").equals("true")) {
-            status = ftpConnect(
-                ConfigReader.getProperty("ftp.host"),
-                ConfigReader.getProperty("ftp.username"),
-                ConfigReader.getProperty("ftp.password"),
-                Integer.parseInt(ConfigReader.getProperty("ftp.port", "21"))
-            );
+        status = ftpConnect("ftp.example.com", "your_ftp_username", "your_ftp_password", 0);
         if (status) {
             System.out.println("DriveHQ connected successfully.");
         } else {
@@ -33,9 +26,9 @@ public class MyFTPClient1 {
         */
     }
 
-    // Uploads file from configured certificates path
+    // Uploads file from: C:/Users/ashis/Documents/certificates/<filename>
     public boolean upload(String filename) {
-        String localFilePath = ConfigReader.getCertificatesPath() + "/" + filename;
+        String localFilePath = "C:/Users/ashis/Documents/certificates/" + filename;
         
         // Cloud upload is currently disabled
         System.out.println("Cloud upload disabled - file saved locally only");
@@ -52,9 +45,9 @@ public class MyFTPClient1 {
         return true;
     }
 
-    // Downloads file to configured download path
+    // Downloads file to: C:/download/certificates/<filename>
     public boolean download(String filename) {
-        String localFilePath = ConfigReader.getDownloadPath() + "/" + filename;
+        String localFilePath = "C:/download/certificates/" + filename;
         
         // Cloud download is currently disabled
         System.out.println("Cloud download disabled - using local file if available");

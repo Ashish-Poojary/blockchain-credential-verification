@@ -134,7 +134,7 @@ public class guestvalidatehash extends HttpServlet {
     
     private String calculateCurrentFileHash(String usn) {
         try {
-            String filePath = utils.ConfigReader.getCertificatesPath() + "/" + usn + ".jpg";
+            String filePath = "C:/Users/ashis/Documents/certificates/" + usn + ".jpg";
             File file = new File(filePath);
             
             if (!file.exists()) {

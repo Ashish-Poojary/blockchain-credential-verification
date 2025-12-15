@@ -6,7 +6,7 @@
     String studentEmail = request.getParameter("email");
     String studentUSN = request.getParameter("usn"); // Get USN from the form
     String issueDetails = request.getParameter("message");
-    String adminEmail = utils.ConfigReader.getAdminEmail();
+    String adminEmail = ConfigReader.getAdminEmail();
 
     Sendmail mailSender = new Sendmail();
     try {

@@ -3,7 +3,6 @@
 <%@page import ="java.sql.*"%>
 <%@page import="java.util.*,java.io.*"%>
 <%@page import="ftp.MyFTPClient1"%>
-<%@page import="utils.ConfigReader"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -336,7 +335,7 @@
             if ("HASHVALIDATED".equals(message)) {
                 out.println("<script>alert('Hash validated Successfully!');</script>");
                 String file = studentUsn + ".jpg";
-                String fpath1 = ConfigReader.getCertificatesPath().replace("/", "\\") + "\\" + file;
+                String fpath1 = "C:\\Users\\ashis\\Documents\\certificates\\" + file;
     %>
         <div class="form-container" style="text-align: center;">
             <div class="form-title">Certificate Preview</div>

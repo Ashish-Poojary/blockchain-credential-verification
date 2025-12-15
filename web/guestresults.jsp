@@ -2,7 +2,6 @@
 <%@page import="java.util.*"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="security.CertificateModificationDetector.ModificationAnalysisResult"%>
-<%@page import="utils.ConfigReader"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -310,7 +309,7 @@
                 <%
                 if (usn != null) {
                     String file = usn + ".jpg";
-                    String fpath1 = ConfigReader.getCertificatesPath().replace("/", "\\") + "\\" + file;
+                    String fpath1 = "C:\\Users\\ashis\\Documents\\certificates\\" + file;
                 %>
                     <img src="view.jsp?id=<%=fpath1%>" alt="Certificate Preview" class="certificate-image"/>
                     <br><br>
