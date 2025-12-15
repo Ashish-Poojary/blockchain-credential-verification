@@ -1,11 +1,12 @@
 <%@page import="mail.Sendmail"%>
 <%@page import="javax.mail.MessagingException"%>
+<%@page import="utils.ConfigReader"%>
 <%
     // Retrieve data from the form
     String studentEmail = request.getParameter("email");
     String studentUSN = request.getParameter("usn"); // Get USN from the form
     String issueDetails = request.getParameter("message");
-    String adminEmail = "harshithabh370@gmail.com"; // Replace with admin's email
+    String adminEmail = utils.ConfigReader.getAdminEmail();
 
     Sendmail mailSender = new Sendmail();
     try {

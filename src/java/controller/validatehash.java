@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Hash Validation Servlet
+ * Handles certificate hash validation and tampering detection
  */
 package controller;
 
@@ -10,6 +9,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.io.File;
+import java.io.FileInputStream;
+import java.security.MessageDigest;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,32 +39,33 @@ public class validatehash extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            // Process hash validation
            
             HttpSession s=request.getSession();
             String usn=request.getParameter("usn");
             String hash=request.getParameter("hash");
             
-            //insert inn blockchain
-            Socket soc=new Socket("localhost",3000);
-            System.out.println("socket conneted");
-            ObjectOutputStream oos=new ObjectOutputStream(soc.getOutputStream());
-            ObjectInputStream oin=new ObjectInputStream(soc.getInputStream());
-            System.out.println("streams created");
+            // First, get the stored hash from blockchain
+            String storedHash = getStoredHashFromBlockchain(usn);
             
-            oos.writeObject("VALIDATEHASH");
-            oos.writeObject(usn);
-            oos.writeObject(hash);
-       
-            String reply=(String)oin.readObject();
-            
-            if (reply.equals("SUCCESS"))
-            {
-                response.sendRedirect("downloadcertificate.jsp?msg=HASHVALIDATED");
+            if (storedHash.equals("NOTFOUND")) {
+                response.sendRedirect("downloadcertificate.jsp?msg=STUDENTNOTFOUND");
+                return;
             }
-            else
-            {
-                response.sendRedirect("downloadcertificate.jsp?msg=INVALIDHASH");
+            
+            // Calculate current hash of the file
+            String currentHash = calculateCurrentFileHash(usn);
+            
+            if (currentHash.equals("FILENOTFOUND")) {
+                response.sendRedirect("downloadcertificate.jsp?msg=FILENOTFOUND");
+                return;
+            }
+            
+            // Compare current hash with stored hash
+            if (currentHash.equals(storedHash)) {
+                response.sendRedirect("downloadcertificate.jsp?msg=HASHVALIDATED");
+            } else {
+                response.sendRedirect("downloadcertificate.jsp?msg=TAMPERED");
             }
             
         }
@@ -70,6 +73,60 @@ public class validatehash extends HttpServlet {
         {
             System.out.println(e);
             e.printStackTrace();
+            response.sendRedirect("downloadcertificate.jsp?msg=ERROR");
+        }
+    }
+    
+    private String getStoredHashFromBlockchain(String usn) {
+        try {
+            Socket soc = new Socket("localhost", 3000);
+            ObjectOutputStream oos = new ObjectOutputStream(soc.getOutputStream());
+            ObjectInputStream oin = new ObjectInputStream(soc.getInputStream());
+            
+            oos.writeObject("GETMYHASH");
+            oos.writeObject(usn);
+            
+            String reply = (String) oin.readObject();
+            
+            oos.close();
+            oin.close();
+            soc.close();
+            
+            return reply;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "NOTFOUND";
+        }
+    }
+    
+    private String calculateCurrentFileHash(String usn) {
+        try {
+            String filePath = utils.ConfigReader.getCertificatesPath() + "/" + usn + ".jpg";
+            File file = new File(filePath);
+            
+            if (!file.exists()) {
+                return "FILENOTFOUND";
+            }
+            
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            try (FileInputStream fis = new FileInputStream(file)) {
+                byte[] byteArray = new byte[1024];
+                int bytesCount;
+                while ((bytesCount = fis.read(byteArray)) != -1) {
+                    digest.update(byteArray, 0, bytesCount);
+                }
+            }
+            
+            byte[] bytes = digest.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : bytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "ERROR";
         }
     }
 

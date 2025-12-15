@@ -7,9 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
 <!--
-	Aesthetic by freehtml5.co
-	Twitter: http://twitter.com/fh5co
-	URL: http://freehtml5.co
+	Blockchain-Based Academic Credential Verification System
 -->
 <html>
 	<head>
@@ -17,9 +15,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Certificate Issue</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
-	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
-	<meta name="author" content="FreeHTML5.co" />
+	<meta name="description" content="Blockchain-Based Academic Credential Verification System" />
+	<meta name="keywords" content="blockchain, certificate verification, academic credentials, tampering detection, QR code" />
+	<meta name="author" content="Academic Credential System" />
 
   	<!-- Facebook and Twitter integration -->
 	<meta property="og:title" content=""/>
@@ -99,11 +97,28 @@
          
     
   
-		<h1 align="center">ABOUT US</h1>
-                    
-                <center>
-                    add text here
-                </center>
+		<div class="container" style="margin-top: 50px;">
+			<div class="row">
+				<div class="col-md-12">
+					<h1 style="text-align: center; margin-bottom: 30px;">ABOUT US</h1>
+					<div class="well" style="background-color: #f8f9fa; padding: 30px; border-radius: 10px;">
+						<h3>Blockchain-Based Academic Credential Verification System</h3>
+						<p style="font-size: 16px; line-height: 1.6;">
+							Our system provides a secure, decentralized approach to academic credential verification using blockchain technology. 
+							This ensures that certificates and academic records remain tamper-proof and easily verifiable.
+						</p>
+						<h4>Key Features:</h4>
+						<ul style="font-size: 16px; line-height: 1.8;">
+							<li><strong>Secure Storage:</strong> All certificates are stored with SHA-256 hash verification</li>
+							<li><strong>QR Code Integration:</strong> Easy verification through scannable QR codes</li>
+							<li><strong>Tampering Detection:</strong> Real-time detection of any unauthorized modifications</li>
+							<li><strong>Decentralized Verification:</strong> Blockchain-based immutable record keeping</li>
+							<li><strong>User-Friendly Interface:</strong> Simple and intuitive web interface</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
               
 
 	</div>

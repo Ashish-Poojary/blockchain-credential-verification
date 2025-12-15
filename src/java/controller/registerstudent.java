@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Student Registration Servlet
+ * Handles student registration and account creation
  */
 package controller;
 
@@ -45,7 +44,7 @@ public class registerstudent extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            // Process student registration
             String usn = request.getParameter("usn");
             String t1=request.getParameter("t1").trim();
              String t2=request.getParameter("t2").trim();
@@ -86,7 +85,8 @@ public class registerstudent extends HttpServlet {
                 response.sendRedirect("registerstudent.jsp?msg=EXIST");
             }
             
-            new SendMailExample().main(t4,"Your Login ID is "+usn+"\nYour password is "+t5);
+            new SendMailExample().sendMail(t4, "Your Login ID is " + usn + "\nYour password is " + t5);
+
             
             PreparedStatement pst2=con.prepareStatement("insert into student values(?,?,?,?,?,?)");
             pst2.setString(1,usn);
@@ -96,7 +96,7 @@ public class registerstudent extends HttpServlet {
             pst2.setString(5,t5);
            
            
-            File f=new File("C:\\studentcertificate");
+            File f=new File(utils.ConfigReader.getImagesPath());
                 System.out.println(f.getPath());
                 if (!f.exists())
                     f.mkdir();

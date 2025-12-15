@@ -1,274 +1,245 @@
 package ftp;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-
-import org.apache.commons.net.ftp.*;
 import java.util.Vector;
-//import android.content.Context;
-//import android.util.Log;
+import org.apache.commons.net.ftp.*;
+import utils.ConfigReader;
 
 public class MyFTPClient1 {
-	
-	//Now, declare a public FTP client object.
 
-	private static final String TAG = "MyFTPClient";
-	public FTPClient mFTPClient = null; 
-        public boolean status=false;
-                
-        public MyFTPClient1()
-        {
-             status=ftpConnect("ftp.drivehq.com","HarshithaBH","harshi123@",0);
-		if (status==true)
-		{
-			
-		System.out.println("logged in..");
-		}
-		
-		else
-		System.out.println("login error..");
-		
+    public FTPClient mFTPClient = null;
+    public boolean status = false;
+
+    public MyFTPClient1() {
+        // Cloud storage is currently disabled
+        System.out.println("Cloud storage disabled - using local storage only");
+        
+        // FTP connection (commented out - configure in config.properties if needed)
+        /*
+        if (ConfigReader.getProperty("ftp.enabled", "false").equals("true")) {
+            status = ftpConnect(
+                ConfigReader.getProperty("ftp.host"),
+                ConfigReader.getProperty("ftp.username"),
+                ConfigReader.getProperty("ftp.password"),
+                Integer.parseInt(ConfigReader.getProperty("ftp.port", "21"))
+            );
+        if (status) {
+            System.out.println("DriveHQ connected successfully.");
+        } else {
+            System.out.println("DriveHQ connection failed.");
+        }
+        */
+    }
+
+    // Uploads file from configured certificates path
+    public boolean upload(String filename) {
+        String localFilePath = ConfigReader.getCertificatesPath() + "/" + filename;
+        
+        // Cloud upload is currently disabled
+        System.out.println("Cloud upload disabled - file saved locally only");
+        System.out.println("File saved to: " + localFilePath);
+        
+        // DriveHQ upload (commented out)
+        /*
+        boolean s1 = ftpUpload(localFilePath, filename, "/My Documents");
+        System.out.println(s1 ? "DriveHQ upload successful." : "DriveHQ upload failed.");
+        return s1;
+        */
+        
+        // Return true since file is saved locally
+        return true;
+    }
+
+    // Downloads file to configured download path
+    public boolean download(String filename) {
+        String localFilePath = ConfigReader.getDownloadPath() + "/" + filename;
+        
+        // Cloud download is currently disabled
+        System.out.println("Cloud download disabled - using local file if available");
+        System.out.println("Looking for file at: " + localFilePath);
+        
+        // Check if file exists locally
+        File localFile = new File(localFilePath);
+        if (localFile.exists()) {
+            System.out.println("Local file found - download successful");
+            return true;
+        } else {
+            System.out.println("Local file not found - download failed");
+            return false;
         }
         
-        public boolean upload(String path,String fname)
-        {
-            boolean s1=ftpUpload(path,fname,".");
-				
-			if(s1)
-			System.out.println("upload success..");
-			else
-			System.out.println("upload fail..");
-                        
-                        return s1;
+        // DriveHQ download (commented out)
+        /*
+        boolean s1 = ftpDownload("/My Documents/certificate/" + filename, localFilePath);
+        System.out.println(s1 ? "DriveHQ download successful." : "DriveHQ download failed.");
+        return s1;
+        */
+    }
+
+    // FTP connection method (commented out - cloud storage disabled)
+    /*
+    public boolean ftpConnect(String host, String username, String password, int port) {
+        try {
+            mFTPClient = new FTPClient();
+            mFTPClient.connect(host);
+            if (FTPReply.isPositiveCompletion(mFTPClient.getReplyCode())) {
+                boolean loginStatus = mFTPClient.login(username, password);
+                mFTPClient.setFileType(FTP.BINARY_FILE_TYPE);
+                mFTPClient.enterLocalPassiveMode();
+                return loginStatus;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        
-        public boolean download(String drive,String path)
-        {
-            boolean s1=ftpDownload(drive,path);
-            if(s1)
-			System.out.println("Download success..");
-			else
-			System.out.println("Download fail..");
-            return s1;
+        return false;
+    }
+    */
+
+    // FTP disconnect method (commented out - cloud storage disabled)
+    /*
+    public boolean ftpDisconnect() {
+        try {
+            mFTPClient.logout();
+            mFTPClient.disconnect();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return false;
+    }
+    */
 
-	//Method to connect to FTP server:
-	public boolean ftpConnect(String host, String username,
-	                          String password, int port)
-	{
-	    try {
-	        mFTPClient = new FTPClient();
-	        // connecting to the host
-	        mFTPClient.connect(host);
+    // FTP file list method (commented out - cloud storage disabled)
+    /*
+    public Vector<String> ftpPrintFilesList(String dirPath) {
+        Vector<String> fileList = new Vector<>();
+        try {
+            ftpChangeDirectory(dirPath);
+            FTPFile[] ftpFiles = mFTPClient.listFiles();
+            for (FTPFile file : ftpFiles) {
+                if (file.isFile()) {
+                    fileList.add(file.getName());
+                    System.out.println("File: " + file.getName());
+                } else {
+                    System.out.println("Directory: " + file.getName());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileList;
+    }
+    */
 
-	        // now check the reply code, if positive mean connection success
-	        if (FTPReply.isPositiveCompletion(mFTPClient.getReplyCode())) {
-	            // login using username & password
-	            boolean status = mFTPClient.login(username, password);
+    // FTP working directory method (commented out - cloud storage disabled)
+    /*
+    public String ftpGetCurrentWorkingDirectory() {
+        try {
+            return mFTPClient.printWorkingDirectory();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    */
 
-	            /* Set File Transfer Mode
-	             *
-	             * To avoid corruption issue you must specified a correct
-	             * transfer mode, such as ASCII_FILE_TYPE, BINARY_FILE_TYPE,
-	             * EBCDIC_FILE_TYPE .etc. Here, I use BINARY_FILE_TYPE
-	             * for transferring text, image, and compressed files.
-	             */
-	            mFTPClient.setFileType(FTP.ASCII_FILE_TYPE);
-	            mFTPClient.enterLocalPassiveMode();
+    // FTP change directory method (commented out - cloud storage disabled)
+    /*
+    public boolean ftpChangeDirectory(String directoryPath) {
+        try {
+            return mFTPClient.changeWorkingDirectory(directoryPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    */
 
-	            return status;
-	        }
-	    } catch(Exception e) {
-//	        Log.d(TAG, "Error: could not connect to host " + host );
-	    }
+    // FTP remove directory method (commented out - cloud storage disabled)
+    /*
+    public boolean ftpRemoveDirectory(String dirPath) {
+        try {
+            return mFTPClient.removeDirectory(dirPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    */
 
-	    return false;
-	} 
+    // FTP remove file method (commented out - cloud storage disabled)
+    /*
+    public boolean ftpRemoveFile(String filePath) {
+        try {
+            return mFTPClient.deleteFile(filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    */
 
-	//Method to disconnect from FTP server:
+    // FTP rename file method (commented out - cloud storage disabled)
+    /*
+    public boolean ftpRenameFile(String from, String to) {
+        try {
+            return mFTPClient.rename(from, to);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    */
 
-	public boolean ftpDisconnect()
-	{
-	    try {
-	        mFTPClient.logout();
-	        mFTPClient.disconnect();
-	        return true;
-	    } catch (Exception e) {
-//	        Log.d(TAG, "Error occurred while disconnecting from ftp server.");
-	    }
+    // FTP download method (commented out - cloud storage disabled)
+    /*
+    public boolean ftpDownload(String srcFilePath, String desFilePath) {
+        boolean status = false;
+        try {
+            File folder = new File("C:/download/certificates");
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+            FileOutputStream desFileStream = new FileOutputStream(desFilePath);
+            status = mFTPClient.retrieveFile(srcFilePath, desFileStream);
+            desFileStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+    */
 
-	    return false;
-	} 
-        
-        
-        	//Method to list all files in a directory:
+    // FTP upload method (commented out - cloud storage disabled)
+    /*
+    public boolean ftpUpload(String srcFilePath, String desFileName, String desDirectory) {
+        boolean status = false;
+        try {
+            ftpChangeDirectory(desDirectory); // Change to /My Documents
 
-	public Vector ftpPrintFilesList(String dir_path)
-	{
-            Vector v=new Vector();
-            String dir="";
-	    try {
-	    	ftpChangeDirectory(dir_path);
-	        FTPFile[] ftpFiles = mFTPClient.listFiles(dir_path);
-	        int length = ftpFiles.length;
+            // Check if 'certificate' folder exists
+            FTPFile[] dirs = mFTPClient.listDirectories();
+            boolean folderExists = false;
+            for (FTPFile dir : dirs) {
+                if (dir.getName().equalsIgnoreCase("certificate")) {
+                    folderExists = true;
+                    break;
+                }
+            }
+            if (!folderExists) {
+                mFTPClient.makeDirectory("certificate");
+            }
+            mFTPClient.changeWorkingDirectory("certificate");
 
-	        for (int i = 0; i < length; i++) {
-	            String name = ftpFiles[i].getName();
-	            boolean isFile = ftpFiles[i].isFile();
-
-	            if (isFile) {
-                         v.add(name);
-	                System.out.println( "File : " + name);
-	            }
-	            else {
-                        dir=name;
-	                System.out.println( "Directory : " + name);
-                       
-                            
-	            }
-	        }
-	    } catch(Exception e) {
-	        e.printStackTrace();
-	    }
-            return v;
-	} 
-
-	//Method to get current working directory:
-
-	public String ftpGetCurrentWorkingDirectory()
-	{
-	    try {
-	        String workingDir = mFTPClient.printWorkingDirectory();
-	        return workingDir;
-	    } catch(Exception e) {
-//	        Log.d(TAG, "Error: could not get current working directory.");
-	    }
-
-	    return null;
-	} 
-
-	//Method to change working directory:
-
-	public boolean ftpChangeDirectory(String directory_path)
-	{
-	    try {
-	        mFTPClient.changeWorkingDirectory(directory_path);
-	    } catch(Exception e) {
-//	        Log.d(TAG, "Error: could not change directory to " + directory_path);
-	    }
-
-	    return false;
-	} 
-
-
-
-
-
-	//Method to delete/remove a directory:
-
-	public boolean ftpRemoveDirectory(String dir_path)
-	{
-	    try {
-	        boolean status = mFTPClient.removeDirectory(dir_path);
-	        return status;
-	    } catch(Exception e) {
-	   //     Log.d(TAG, "Error: could not remove directory named " + dir_path);
-	    }
-
-	    return false;
-	} 
-
-	//Method to delete a file:
-
-	public boolean ftpRemoveFile(String filePath)
-	{
-	    try {
-	        boolean status = mFTPClient.deleteFile(filePath);
-	        return status;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-	    return false;
-	} 
-
-	//Method to rename a file:
-
-	public boolean ftpRenameFile(String from, String to)
-	{
-	    try {
-	        boolean status = mFTPClient.rename(from, to);
-	        return status;
-	    } catch (Exception e) {
-//	        Log.d(TAG, "Could not rename file: " + from + " to: " + to);
-	    }
-
-	    return false;
-	} 
-
-	//Method to download a file from FTP server:
-
-	/**
-	 * mFTPClient: FTP client connection object (see FTP connection example)
-	 * srcFilePath: path to the source file in FTP server
-	 * desFilePath: path to the destination file to be saved in sdcard
-	 */
-	public boolean ftpDownload(String srcFilePath, String desFilePath)
-	{
-	    boolean status = false;
-	    try {
-	        FileOutputStream desFileStream = new FileOutputStream(desFilePath);;
-	        status = mFTPClient.retrieveFile(srcFilePath, desFileStream);
-	        desFileStream.close();
-
-	        return status;
-	    } catch (Exception e) {
-//	        Log.d(TAG, "download failed");
-	    }
-
-	    return status;
-	} 
-
-	//Method to upload a file to FTP server:
-
-	/**
-	 * mFTPClient: FTP client connection object (see FTP connection example)
-	 * srcFilePath: source file path in sdcard
-	 * desFileName: file name to be stored in FTP server
-	 * desDirectory: directory path where the file should be upload to
-	 */
-	public boolean ftpUpload(String srcFilePath, String desFileName,
-	                         String desDirectory)
-	{
-	    boolean status = false;
-	    try {
-	        FileInputStream srcFileStream = new FileInputStream(srcFilePath);
-	        
-	       // FileInputStream srcFileStream = context.openFileInput(srcFilePath);
-
-	        // change working directory to the destination directory
-	        //if (ftpChangeDirectory(desDirectory)) {
-	            status = mFTPClient.storeFile(desFileName, srcFileStream);
-	        //}
-
-	        srcFileStream.close();
-	        return status;
-	    } 
-	    catch (Exception e) {
-//	        Log.d(TAG, "upload failed: " + e);
-	    }
-
-	    return status;
-	}
-	
-	public static void main(String args[])
-        {
-            MyFTPClient1 ftp=new MyFTPClient1();
-            ftp.download("./4mc02cs026.jpg", "c:/download/4mc02cs026.jpg");
-            ftp.ftpDisconnect();
-        }	
+            FileInputStream srcFileStream = new FileInputStream(srcFilePath);
+            status = mFTPClient.storeFile(desFileName, srcFileStream);
+            srcFileStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+    */
 }

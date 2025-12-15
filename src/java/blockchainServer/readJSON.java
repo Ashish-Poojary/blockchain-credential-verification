@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * JSON Processing Utility
+ * Handles JSON operations for blockchain data
  */
 package blockchainServer;
 
@@ -73,10 +72,29 @@ public readJSON()
         Block b=new Block();
         
         b.usn=usn;
-       b.chash=chash;
-      
+        b.chash=chash;
         b.previousHash=prev;
         b.hash=hash;
+        
+        // Load timestamp from JSON if available
+        if (blockdetails.containsKey("timestamp")) {
+            try {
+                Long timestamp = (Long) blockdetails.get("timestamp");
+                if (timestamp != null && timestamp > 0) {
+                    b.setTimestamp(timestamp);
+                    System.out.println("Loaded timestamp for USN " + usn + ": " + timestamp);
+                } else {
+                    // If timestamp is 0 or null, don't set it - let it remain 0
+                    System.out.println("WARNING: Invalid timestamp for USN " + usn + ": " + timestamp);
+                }
+            } catch (Exception e) {
+                System.out.println("Error loading timestamp for USN " + usn + ": " + e.getMessage());
+                // Don't set timestamp on error - let it remain 0
+            }
+        } else {
+            // If no timestamp in JSON, don't set it - let it remain 0
+            System.out.println("No timestamp found for USN " + usn + " in JSON");
+        }
         
         readblockreq.blockchain.add(b);
          

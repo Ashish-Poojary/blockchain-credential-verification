@@ -1,0 +1,95 @@
+# Configuration files with sensitive data
+config.properties
+*.properties
+!config.properties.example
+
+# IDE specific files
+nbproject/private/
+nbproject/genfiles.properties
+nbproject/build-impl.xml
+nbproject/project.properties
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+# Compiled classes
+build/
+dist/
+*.class
+*.jar
+*.war
+*.ear
+
+# Log files
+*.log
+*.log.*
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# User-specific paths (NetBeans)
+nbproject/private/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Certificate storage (user-specific)
+C:/certificates/
+C:/studentcertificate/
+C:/download/
+
+# Application server logs
+logs/
+*.log
+
+# Backup files
+*.bak
+*.backup
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# Gradle
+.gradle/
+build/
+
+# Eclipse
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.recommenders
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/

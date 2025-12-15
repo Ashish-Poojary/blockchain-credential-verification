@@ -64,6 +64,8 @@ public class readblockreq extends Thread
                         blockcserver.jTextArea1.append("Block Successfully added!\n");
                         blockchain.get(blockchain.size()-1).mineBlock(difficulty);
                         
+                        // MINIMAL FIX: Update previousHash for next block
+                        previousHash = blockchain.get(blockchain.size()-1).hash;
                         
                         oos.writeObject("SUCCESS");
                         System.out.println("reply sent..");
@@ -126,6 +128,21 @@ public class readblockreq extends Thread
                             
                   
                 }
+                else
+                if (req.equals("GETTIMESTAMP"))
+                {
+                    String usn=(String)oin.readObject();
+                    
+                    blockcserver.jTextArea1.append(req+" request received for student "+usn+" \n");
+                    
+                    String reply=getTimestamp(usn);
+                   
+                    oos.writeObject(reply);
+                  
+                        
+                            
+                  
+                }
                     
                               
                 oos.close();
@@ -145,6 +162,7 @@ public class readblockreq extends Thread
     
     
     
+    
     String getmyhash(String usn)
     {
         
@@ -159,10 +177,10 @@ public class readblockreq extends Thread
                 
                 if (b.usn.equals(usn))
                 {
-                   reply=b.chash;
+                   reply=b.chash+"$"+b.getFormattedDate(); // Return hash with timestamp
                    //reply="SUCCESS";
                      break;   
-                   
+                    
                   
                    // System.out.println(v.get(0).toString().trim());
                     
@@ -171,6 +189,33 @@ public class readblockreq extends Thread
             
            
             
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+
+        return reply;
+    }
+    
+    // New method to get timestamp for a specific USN
+    String getTimestamp(String usn)
+    {
+        String reply="NOTFOUND";
+        
+        try
+        {
+            for (int i=0;i<blockchain.size();i++)
+            {
+                Block b=blockchain.get(i);
+                
+                if (b.usn.equals(usn))
+                {
+                   reply=b.getFormattedDate();
+                   break;   
+                }
+            }
         }
         catch(Exception e)
         {
@@ -233,7 +278,7 @@ public class readblockreq extends Thread
                 
                // if (b.partner.equals(uname))
                 {
-                   String data=b.usn+"$"+b.chash;
+                   String data=b.usn+"$"+b.chash+"$"+b.getFormattedDate(); // Added timestamp to data
                         
                    
                    v.add(data);
@@ -277,11 +322,10 @@ public class readblockreq extends Thread
                     JSONObject blockdetails = new JSONObject();
                     blockdetails.put("usn", b.usn);
                     blockdetails.put("chash", b.chash);
-                   
-                  
-                 
                     blockdetails.put("previoushash", b.previousHash);
                     blockdetails.put("hash", b.hash);
+                    blockdetails.put("timestamp", b.getTimestamp()); // Added timestamp
+                    blockdetails.put("uploadDate", b.getFormattedDate()); // Added formatted date
                     
                     JSONObject blockObject = new JSONObject(); 
                     blockObject.put("block", blockdetails);
@@ -290,9 +334,9 @@ public class readblockreq extends Thread
                 }
                 
                 FileWriter file = new FileWriter("userlogs.json");
-                 file.write(blockList.toJSONString()); 
-                 file.flush();
-                 file.close();
+                file.write(blockList.toJSONString()); 
+                file.flush();
+                file.close();
                 
             }
         }

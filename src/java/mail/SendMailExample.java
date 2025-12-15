@@ -3,90 +3,70 @@ package mail;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.mail.internet.MimeMessage.RecipientType;
-
-import java.text.SimpleDateFormat;
 import java.util.*;
+import utils.ConfigReader;
 
 public class SendMailExample {
 
-	/**
-	 * @param args
-	 */
-	public void main(String sendermail,String code)throws MessagingException {
-		// TODO Auto-generated method stub
-		// Recipient's email ID needs to be mentioned.
-			String sender_email = "harshithabh370@gmail.com";
-		//	String sender_password = "your password";
-			String sender_host = "smtp.gmail.com";
-			String sender_port = "465";
-			String reciever_id = sendermail;
-			String subject_to_be_given = "Student Certifiacte Password";
-			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-	        String val = sdf.format(cal.getTime());		 	       
-			String message_mi = code;
+    public void sendMail(String sendermail, String code) throws MessagingException {
+        String smtpEmail = ConfigReader.getSmtpUsername();
+        String smtpPassword = ConfigReader.getSmtpPassword();
+        String senderHost = ConfigReader.getSmtpHost();
+        String senderPort = ConfigReader.getSmtpPort();
+        String recipientId = sendermail;
+        String subject = "Student Certificate Password";
+        String messageContent = code;
 
-			Properties props = new Properties();
-			 props.put("mail.smtp.user", sender_email);
-			 props.put("mail.smtp.host", sender_host);
-			 props.put("mail.smtp.port", sender_port);
-			 props.put("mail.smtp.starttls.enable","true");
-			 props.put("mail.smtp.auth", "true");
-			 //props.put("mail.smtp.debug", "true");
-			 props.put("mail.smtp.socketFactory.port",sender_port);
-			 props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
-			 props.put("mail.smtp.socketFactory.fallb","false");
+        Properties props = new Properties();
+        props.put("mail.smtp.user", smtpEmail);
+        props.put("mail.smtp.host", senderHost);
+        props.put("mail.smtp.port", senderPort);
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.socketFactory.port", senderPort);
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
-			 SecurityManager security = System.getSecurityManager();
+        // 🔥 Fix: This line avoids SSL trust issue
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
-			 try
-			 {
-			 Authenticator auth = new SMTPAuthenticator();
-			 Session session = Session.getInstance(props, auth);
-			 //session.setDebug(true);
+        Authenticator auth = new SMTPAuthenticator(smtpEmail, smtpPassword);
+        Session session = Session.getInstance(props, auth);
 
-			 MimeMessage msg = new MimeMessage(session);
-			 msg.setText(message_mi);
-			 msg.setSubject(subject_to_be_given);
-			 msg.setFrom(new InternetAddress(sender_email));
-			 //msg.addRecipient(Message.RecipientType.TO,new InternetAddress(reciever_id));
-			 msg.addRecipient(RecipientType.TO, new InternetAddress(reciever_id));
-			 Transport.send(msg);
-			 }
-			 catch (Exception mex)
-			 {
-				 mex.printStackTrace();
-			 }
+        MimeMessage msg = new MimeMessage(session);
+        msg.setText(messageContent);
+        msg.setSubject(subject);
+        String fromEmail = ConfigReader.getFromEmail();
+        if (fromEmail == null || fromEmail.isEmpty()) {
+            fromEmail = smtpEmail;
+        }
+        msg.setFrom(new InternetAddress(fromEmail));
+        msg.addRecipient(RecipientType.TO, new InternetAddress(recipientId));
 
-	}
-        
-        
-        public String getotp()
-        {
-            String otp="";
-            try
-            {
-                Random r=new Random();
-                for (int i=0;i<8;i++)
-                otp+=r.nextInt(9);
-                
-                otp.trim();
-            }
-            catch(Exception e)
-            {
-                System.out.println(e);
-            }
-            
-            return otp;
+        Transport.send(msg);
+
+        System.out.println("✅ Email sent successfully to " + sendermail);
+    }
+
+    public String getOTP() {
+        StringBuilder otp = new StringBuilder();
+        Random r = new Random();
+        for (int i = 0; i < 8; i++) {
+            otp.append(r.nextInt(10));
+        }
+        return otp.toString().trim();
+    }
+
+    class SMTPAuthenticator extends javax.mail.Authenticator {
+        private final String smtpEmail;
+        private final String smtpPassword;
+
+        public SMTPAuthenticator(String smtpEmail, String smtpPassword) {
+            this.smtpEmail = smtpEmail;
+            this.smtpPassword = smtpPassword;
         }
 
-}
-class SMTPAuthenticator extends javax.mail.Authenticator
-{
-	String sender_email = "harshithabh370@gmail.com",
-			sender_password = "eavdxvapewwegizc";
-	public PasswordAuthentication getPasswordAuthentication()
-	{
-			return new PasswordAuthentication(sender_email, sender_password);
-	}
+        public PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(smtpEmail, smtpPassword);
+        }
+    }
 }

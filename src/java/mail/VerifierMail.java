@@ -3,12 +3,15 @@ package mail;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
+import utils.ConfigReader;
 
 public class VerifierMail {
 
     public void sendCertificateMismatchEmail(String studentEmail, String studentUSN, String verifierMessage) throws MessagingException {
-        String senderHost = "smtp.gmail.com";
-        String senderPort = "465";
+        String smtpEmail = ConfigReader.getSmtpUsername();
+        String smtpPassword = ConfigReader.getSmtpPassword();
+        String senderHost = ConfigReader.getSmtpHost();
+        String senderPort = ConfigReader.getSmtpPort();
 
         String subject = "Certificate Verification Failed";
         String messageContent = "Dear Student,\n\n" +
@@ -26,25 +29,19 @@ public class VerifierMail {
         props.put("mail.smtp.socketFactory.port", senderPort);
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
-        try {
-            // SMTP account details
-            String smtpEmail = "p39779186@gmail.com"; // Replace with your SMTP email
-            String smtpPassword = "etgnwwancnjwddwu"; // Replace with your SMTP password
+        Authenticator auth = new SMTPAuthenticator(smtpEmail, smtpPassword);
+        Session session = Session.getInstance(props, auth);
 
-            Authenticator auth = new SMTPAuthenticator(smtpEmail, smtpPassword);
-            Session session = Session.getInstance(props, auth);
-
-            MimeMessage msg = new MimeMessage(session);
-            msg.setText(messageContent);
-            msg.setSubject(subject);
-            msg.setFrom(new InternetAddress(smtpEmail)); // Use default SMTP email
-            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(studentEmail));
-            Transport.send(msg);
-
-            System.out.println("Certificate mismatch email sent successfully!");
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        MimeMessage msg = new MimeMessage(session);
+        msg.setText(messageContent);
+        msg.setSubject(subject);
+        String fromEmail = ConfigReader.getFromEmail();
+        if (fromEmail == null || fromEmail.isEmpty()) {
+            fromEmail = smtpEmail;
         }
+        msg.setFrom(new InternetAddress(fromEmail));
+        msg.addRecipient(Message.RecipientType.TO, new InternetAddress(studentEmail));
+        Transport.send(msg);
     }
 
     class SMTPAuthenticator extends Authenticator {
@@ -61,4 +58,3 @@ public class VerifierMail {
         }
     }
 }
-

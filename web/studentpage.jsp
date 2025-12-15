@@ -7,9 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
 <!--
-	Aesthetic by freehtml5.co
-	Twitter: http://twitter.com/fh5co
-	URL: http://freehtml5.co
+	Blockchain-Based Academic Credential Verification System
 -->
 <html>
 	<head>
@@ -17,9 +15,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Certificate Issue</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
-	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
-	<meta name="author" content="FreeHTML5.co" />
+	<meta name="description" content="Blockchain-Based Academic Credential Verification System" />
+	<meta name="keywords" content="blockchain, certificate verification, academic credentials, tampering detection, QR code" />
+	<meta name="author" content="Academic Credential System" />
 
   	<!-- Facebook and Twitter integration -->
 	<meta property="og:title" content=""/>

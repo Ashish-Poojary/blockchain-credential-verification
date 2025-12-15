@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Hash Saving Servlet
+ * Handles saving certificate hashes to blockchain
  */
 package controller;
 
@@ -38,7 +37,7 @@ public class savehash extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            // Process hash saving
            
             
             HttpSession s=request.getSession();

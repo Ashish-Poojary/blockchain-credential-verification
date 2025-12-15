@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Blockchain Server - Main Server Class
+ * Handles blockchain operations and server initialization
  */
 package blockchainServer;
 
@@ -91,7 +90,7 @@ public class blockcserver extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        // TODO add your handling code here:
+        // Handle window closing - write logs before exit
         r.writelogs();
         
     }//GEN-LAST:event_formWindowClosing

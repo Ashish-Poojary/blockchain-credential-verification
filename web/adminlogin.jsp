@@ -8,9 +8,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Identity Management</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
-	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
-	<meta name="author" content="FreeHTML5.co" />
+	<meta name="description" content="Blockchain-Based Academic Credential Verification System" />
+	<meta name="keywords" content="blockchain, certificate verification, academic credentials, tampering detection, QR code" />
+	<meta name="author" content="Academic Credential System" />
 
   	<!-- Facebook and Twitter integration -->
 	<meta property="og:title" content=""/>
@@ -159,8 +159,8 @@
 						<li class="has-dropdown">
 							<a href="#">Login</a>
 							<ul class="dropdown">
-								<li><a href="companylogin.jsp">Company</a></li>
-								<li><a href="userlogin.jsp">User</a></li>
+								<li><a href="studentlogin.jsp">Student</a></li>
+								<li><a href="guest.jsp">Guest</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -224,7 +224,7 @@
    }
   else
     {
-	out.println( "<script>alert('Login Unsuccess, Please Check your login details');window.location='companylogin.jsp';</script>");
+	out.println( "<script>alert('Login Unsuccess, Please Check your login details');window.location='adminlogin.jsp';</script>");
 
     }
                   rs.close();
