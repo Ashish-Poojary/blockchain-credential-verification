@@ -101,7 +101,7 @@ public class validatehash extends HttpServlet {
     
     private String calculateCurrentFileHash(String usn) {
         try {
-            String filePath = "C:/Users/ashis/Documents/certificates/" + usn + ".jpg";
+            String filePath = utils.ConfigReader.getCertificatesPath() + "/" + usn + ".jpg";
             File file = new File(filePath);
             
             if (!file.exists()) {

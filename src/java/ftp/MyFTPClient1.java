@@ -26,9 +26,9 @@ public class MyFTPClient1 {
         */
     }
 
-    // Uploads file from: C:/Users/ashis/Documents/certificates/<filename>
+    // Uploads file from configured certificates path
     public boolean upload(String filename) {
-        String localFilePath = "C:/Users/ashis/Documents/certificates/" + filename;
+        String localFilePath = utils.ConfigReader.getCertificatesPath() + "/" + filename;
         
         // Cloud upload is currently disabled
         System.out.println("Cloud upload disabled - file saved locally only");

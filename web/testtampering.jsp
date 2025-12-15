@@ -5,6 +5,7 @@
 <%@page import="java.io.File"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.security.MessageDigest"%>
+<%@page import="utils.ConfigReader"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,7 +63,7 @@
                 
                 // Calculate current file hash
                 String currentHash = "FILENOTFOUND";
-                String filePath = "C:/Users/ashis/Documents/certificates/" + usn + ".jpg";
+                String filePath = ConfigReader.getCertificatesPath() + "/" + usn + ".jpg";
                 File file = new File(filePath);
                 
                 if (file.exists()) {

@@ -38,6 +38,9 @@ public class ConfigReader {
         properties.setProperty("email.smtp.password", "");
         properties.setProperty("email.from.address", "");
         properties.setProperty("admin.email", "admin@example.com");
+        properties.setProperty("storage.certificates.path", "C:/certificates");
+        properties.setProperty("storage.images.path", "C:/studentcertificate");
+        properties.setProperty("storage.download.path", "C:/download/certificates");
     }
     
     public static String getSmtpHost() {
@@ -62,6 +65,18 @@ public class ConfigReader {
     
     public static String getAdminEmail() {
         return properties.getProperty("admin.email", "admin@example.com");
+    }
+    
+    public static String getCertificatesPath() {
+        return properties.getProperty("storage.certificates.path", "C:/certificates");
+    }
+    
+    public static String getImagesPath() {
+        return properties.getProperty("storage.images.path", "C:/studentcertificate");
+    }
+    
+    public static String getDownloadPath() {
+        return properties.getProperty("storage.download.path", "C:/download/certificates");
     }
 }
 

@@ -9,7 +9,7 @@ public class test_tampering_detection {
     
     public static void main(String[] args) {
         String usn = "TEST123";
-        String filePath = "C:/Users/ashis/Documents/certificates/" + usn + ".jpg";
+        String filePath = utils.ConfigReader.getCertificatesPath() + "/" + usn + ".jpg";
         
         System.out.println("=== TAMPERING DETECTION TEST ===");
         System.out.println("File: " + filePath);

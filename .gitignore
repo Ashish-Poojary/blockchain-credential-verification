@@ -6,6 +6,13 @@
 .idea/
 *.iml
 .vscode/
+nbproject/private/
+nbproject/genfiles.properties
+nbproject/build-impl.xml
+nbproject/project.properties
+.settings/
+.classpath
+.project
 
 # Compiled files
 *.class
@@ -21,3 +28,12 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Configuration files with sensitive data
+config.properties
+
+# User-specific paths
+C:/Users/
+C:/certificates/
+C:/studentcertificate/
+C:/download/
